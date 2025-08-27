@@ -25,3 +25,7 @@ class ShowBlog(BaseModel):
     # body: str
     creator: ShowUser
     model_config = ConfigDict(from_attributes=True)
+
+class login(BaseModel):
+    username: str
+    password: str

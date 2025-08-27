@@ -1,16 +1,17 @@
-# import uvicorn
 from fastapi import FastAPI, Depends, status, HTTPException
 from blog import models
 from blog.database import *
 from blog import schemas
 from sqlalchemy.orm import Session
 from blog.hashing import Hash
-from blog.routers import blog
+from blog.routers import blog, user, authentication
 
 models.Base.metadata.create_all(engine)
 app = FastAPI()
 app.include_router(blog.router)
-#
+app.include_router(user.router)
+app.include_router(authentication.router)
+
 # def get_db():
 #     db = SessionLocal()
 #     try:
@@ -65,22 +66,19 @@ app.include_router(blog.router)
 #     db.commit()
 #     return 'done'
 
-
-@app.post('/user', response_model=schemas.ShowUser, tags=['users'])
-def create_user(request: schemas.User, db: Session = Depends(get_db)):
-    new_user = models.User(name=request.name, email=request.email, password=Hash.bcrypt(request.password))
-    db.add(new_user)
-    db.commit()
-    db.refresh(new_user)
-    return new_user
-
-
-@app.get('/user/{id}', response_model=schemas.ShowUser, tags=['users'])
-def get_user(id: int, db: Session = Depends(get_db)):
-    user = db.query(models.User).filter(id == models.User.id).first()
-    if not user:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"User with id {id} not found")
-    return user
-
-# if __name__ == "__main__":
-#     uvicorn.run(app, host="0.0.0.0", port=9000, reload=True)
+#
+# @app.post('/user', response_model=schemas.ShowUser, tags=['users'])
+# def create_user(request: schemas.User, db: Session = Depends(get_db)):
+#     new_user = models.User(name=request.name, email=request.email, password=Hash.bcrypt(request.password))
+#     db.add(new_user)
+#     db.commit()
+#     db.refresh(new_user)
+#     return new_user
+#
+#
+# @app.get('/user/{id}', response_model=schemas.ShowUser, tags=['users'])
+# def get_user(id: int, db: Session = Depends(get_db)):
+#     user = db.query(models.User).filter(id == models.User.id).first()
+#     if not user:
+#         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"User with id {id} not found")
+#     return user
