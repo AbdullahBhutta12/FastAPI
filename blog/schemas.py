@@ -1,6 +1,7 @@
 from pydantic import BaseModel, ConfigDict
 from typing import List
 
+
 class Blog(BaseModel):
     title: str
     body: str
@@ -26,6 +27,16 @@ class ShowBlog(BaseModel):
     creator: ShowUser
     model_config = ConfigDict(from_attributes=True)
 
-class login(BaseModel):
+
+class Login(BaseModel):
     username: str
     password: str
+
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+
+class TokenData(BaseModel):
+    email: str | None = None

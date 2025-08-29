@@ -6,7 +6,7 @@ from blog.repository import user
 
 router = APIRouter(
     prefix="/user",
-    tags=['users']
+    tags=['Users']
 )
 
 
