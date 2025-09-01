@@ -27,6 +27,8 @@ def update(id: int, db: Session, request: schemas.Blog):
 
 def delete(id: int, db: Session):
     blog = db.query(models.Blog).filter(id == models.Blog.id)
+    print(f"{models.Blog.id} model.blog id")
+    print(f"{models.Blog.id == id} model.blog id")
     if not blog.first():
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Blog with id {id} not found")
     blog.delete(synchronize_session=False)
@@ -34,7 +36,15 @@ def delete(id: int, db: Session):
     return 'done'
 
 def show(id: int, db: Session):
-    blog = db.query(models.Blog).filter(id == models.Blog.id).first()
+    from sqlalchemy import select
+    print(f"{id} blog id")
+    blog = db.query(models.Blog).filter(models.Blog.id == id).first()
+    # stmt = select(models.Blog).where(models.Blog.id == id).limit(1)
+    # result = db.execute(stmt)
+    # blog = result.scalar()
+    # print(f"{blog} model.blog id")
+    print(f"{models.Blog.id== id} model.blog id")
+    print(f"{id} blog id")
     if not blog:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Blog with id {id} is not available")
     return blog

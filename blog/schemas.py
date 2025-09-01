@@ -7,6 +7,12 @@ class Blog(BaseModel):
     body: str
     model_config = ConfigDict(from_attributes=True)
 
+class UserBlog(BaseModel):
+    name: str
+    email: str
+    blog: Blog
+
+
 
 class User(BaseModel):
     name: str

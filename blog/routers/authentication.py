@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, status, HTTPException
-from blog import models, token
+from blog import models, oauth_token
 from sqlalchemy.orm import Session
 from blog.database import *
 from blog.hashing import Hash
@@ -19,5 +19,5 @@ def login(request: OAuth2PasswordRequestForm= Depends(), db: Session = Depends(g
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail="Incorrect password")
 
-    access_token = token.create_access_token(data={"sub": user.email})
+    access_token = oauth_token.create_access_token(data={"sub": user.email})
     return {"access_token": access_token, "token_type": "bearer"}
